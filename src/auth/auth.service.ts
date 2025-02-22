@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { CreateUserTypes } from 'src/types/user.types';
 
 @Injectable()
 export class AuthService {
@@ -26,9 +27,9 @@ export class AuthService {
     };
   }
 
-  async register(email: string, password: string) {
+  async register({ email, username, password }: CreateUserTypes) {
     const userExists = await this.usersService.findByEmail(email);
     if (userExists) throw new UnauthorizedException('Email already in use');
-    return this.usersService.createUser(email, password);
+    return this.usersService.createUser(email, username, password);
   }
 }
