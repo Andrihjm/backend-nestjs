@@ -5,6 +5,7 @@ export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
+  id: any;
   toObject(): { [x: string]: any } {
     return {
       email: this.email,
