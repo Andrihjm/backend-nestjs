@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Interest, InterestDocument } from 'src/users/schemas/interest.schema';
@@ -25,5 +29,27 @@ export class InterestService {
     return this.interestModel
       .find({ userId: new Types.ObjectId(userId) })
       .exec();
+  }
+
+  async deleteInterest(
+    interestId: string,
+    userId: Types.ObjectId | string,
+  ): Promise<{ message: string }> {
+    const interest = await this.interestModel.findById(interestId);
+
+    if (!interest) {
+      throw new NotFoundException('Interest not found');
+    }
+
+    // Make sure the user owns this interest
+    if (interest.userId.toString() !== userId.toString()) {
+      throw new UnauthorizedException('You can only delete your own interests');
+    }
+
+    await this.interestModel.findByIdAndDelete(interestId);
+
+    return {
+      message: 'Interest deleted successfully',
+    };
   }
 }

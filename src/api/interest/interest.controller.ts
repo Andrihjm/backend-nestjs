@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Request,
   UnauthorizedException,
@@ -34,5 +36,15 @@ export class InterestController {
     }
 
     return this.interestService.findByUserId(req.user._id);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async deleteInterest(@Request() req, @Param('id') id: string) {
+    if (!req.user._id) {
+      throw new UnauthorizedException('User not properly authenticated');
+    }
+
+    return this.interestService.deleteInterest(id, req.user._id);
   }
 }
