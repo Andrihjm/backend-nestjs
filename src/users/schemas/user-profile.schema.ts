@@ -14,7 +14,7 @@ export class Profile {
   @Prop({ required: true })
   displayName: string;
 
-  @Prop({ required: true })
+  @Prop()
   gender: string;
 
   @Prop({ required: true })

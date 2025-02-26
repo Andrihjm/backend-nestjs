@@ -3,3 +3,7 @@ export interface ValidatePayload {
   email: string;
   username: string;
 }
+
+export interface CreateInterestTypes {
+  name: string;
+}
