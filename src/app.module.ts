@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './api/auth/auth.module';
 import { ProfileModule } from './api/profile/profile.module';
 import { InterestModule } from './api/interest/interest.module';
+import { MessageModule } from './api/message/message.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { InterestModule } from './api/interest/interest.module';
     AuthModule,
     ProfileModule,
     InterestModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
