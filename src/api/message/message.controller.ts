@@ -6,6 +6,9 @@ import {
   Req,
   Get,
   Param,
+  Put,
+  Delete,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
@@ -27,5 +30,34 @@ export class MessageController {
   async getMessages(@Req() req, @Param('receiverId') receiverId: string) {
     const userId = req.user._id;
     return await this.messageService.getMessages(userId, receiverId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put(':messageId')
+  async updateMessage(
+    @Req() req,
+    @Param('messageId') messageId: string,
+    @Body('content') content: string,
+  ) {
+    return this.messageService.updateMessage(req.user._id, messageId, content);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':messageId')
+  async deleteMessageEndpoint(
+    @Req() req,
+    @Param('messageId') messageId: string,
+  ) {
+    if (!req.user) {
+      throw new UnauthorizedException('User not authenticated');
+    }
+    const deletedMessage = await this.messageService.deleteMessage(
+      req.user._id,
+      messageId,
+    );
+    return {
+      message: 'This message has been deleted.',
+      deletedMessage,
+    };
   }
 }

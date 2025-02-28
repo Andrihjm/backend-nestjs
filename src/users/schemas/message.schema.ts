@@ -17,6 +17,9 @@ export class Message {
 
   @Prop({ default: false })
   read: boolean;
+
+  @Prop({ default: false })
+  deleted: boolean;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);
