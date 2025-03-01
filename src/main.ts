@@ -8,10 +8,11 @@ async function bootstrap() {
 
   app.enableCors({
     origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
 
-  const port = process.env.PORT || 9000;
-  await app.listen(port);
+  const port = process.env.PORT || 3000;
+  await app.listen(port, '0.0.0.0');
 }
 bootstrap();
